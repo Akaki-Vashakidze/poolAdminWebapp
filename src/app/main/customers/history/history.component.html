@@ -1,0 +1,105 @@
+<mat-dialog-content>
+  <div fxLayout="row">
+    <div>
+      <button mat-icon-button (click)="gridOnF(true)" *ngIf="!gridOn">
+        <mat-icon [color]="'primary'">grid_on</mat-icon>
+      </button>
+      <button mat-icon-button (click)="gridOnF(false)" *ngIf="gridOn">
+        <mat-icon [color]="'accent'">grid_off</mat-icon>
+      </button>
+    </div>
+    <div fxFlex></div>
+    <div>
+      <button mat-icon-button (click)="closeDialog(false)">
+        <mat-icon>
+          close
+        </mat-icon>
+      </button>
+    </div>
+  </div>
+  <mat-tab-group (selectedTabChange)="tabChange($event)">
+    <mat-tab label="აუზი">
+      <div class="container" *ngIf="!gridOn">
+        <div *ngFor="let data of poolData; let i = index">
+          <mat-card class="example-card" [ngClass]="{'currentCard':i==poolData.length-1}">
+            <div>
+              <div fxFlex></div>
+              <div>{{data.timestamp | date:'yyyy-MM-dd HH:mm:ss'}}</div>
+            </div>
+            <mat-card-content>
+              <div>
+                <div fxFlex>მწვრთნელი,ჯგუფი</div>
+                <div fxFlex>{{data.groupCoach}}</div>
+              </div>
+              <div>
+                <div fxFlex>ვიზიტების რაოდენობა / პაკეტი</div>
+                <div fxFlex>{{data.visitAmountP}}</div>
+              </div>
+              <div>
+                <div fxFlex>ბარათის სტატუსი</div>
+                <div fxFlex>{{data.cardStatus}}</div>
+              </div>
+              <div>
+                <div fxFlex>დაწყების თარიღი</div>
+                <div fxFlex>{{data.startDate}}</div>
+              </div>
+              <div>
+                <div fxFlex>დასრულების თარიღი</div>
+                <div fxFlex>{{data.endDate}}</div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <div class="arrow-divider" *ngIf="i !== (poolData.length-1)" fxLayout="row" fxLayoutAlign="center ">
+            <mat-icon [color]="'primary'">expand_more</mat-icon>
+          </div>
+        </div>
+      </div>
+      <app-table *ngIf="gridOn" [data]="poolData" [columns]="poolColumns" [paging]="poolPaging"
+        (pageChange)="pageChange($event, 'pool')"></app-table>
+    </mat-tab>
+    <!-- <mat-tab label="მომხმარებელი">
+      <div class="container" *ngIf="!gridOn">
+        <div *ngFor="let data of userData; let i = index">
+          <mat-card class="example-card" [ngClass]="{'currentCard':i==userData.length-1}">
+            <div>
+              <div fxFlex></div>
+              <div >{{data.timestamp | date}}</div>
+            </div>
+            <mat-card-content>
+              <div>
+                <div fxFlex>სახელი, გვარი</div>
+                <div fxFlex>{{data.fullName}}</div>
+              </div>
+              <div>
+                <div fxFlex>დაბადების თარიღი</div>
+                <div fxFlex>{{data.birthDate}}</div>
+              </div>
+              <div>
+                <div fxFlex>მობილური</div>
+                <div fxFlex>{{data.mobile}}</div>
+              </div>
+              <div>
+                <div fxFlex>ტელეფონი</div>
+                <div fxFlex>{{data.phone}}</div>
+              </div>
+              <div>
+                <div fxFlex>პასუხისმგებელი პირი</div>
+                <div fxFlex>{{data.responsible}}</div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+          <div class="arrow-divider" *ngIf="i !== (userData.length-1)" fxLayout="row" fxLayoutAlign="center ">
+            <mat-icon [color]="'primary'">expand_more</mat-icon>
+          </div>
+        </div>
+
+      </div>
+      <app-table
+        *ngIf="gridOn"
+        [data]="userData"
+        [columns]="userColumns"
+        [paging]="userPaging"
+        (pageChange)="pageChange($event, 'user')"></app-table>
+    </mat-tab> -->
+  </mat-tab-group>
+</mat-dialog-content>

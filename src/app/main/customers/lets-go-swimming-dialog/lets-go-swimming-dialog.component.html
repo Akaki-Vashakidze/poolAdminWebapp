@@ -1,0 +1,11 @@
+<mat-dialog-content>
+  <div fxLayout="row">
+    <div fxFlex></div>
+    <button mat-icon-button (click)="closeDialog(false)">
+      <mat-icon>
+        close
+      </mat-icon>
+    </button>
+  </div>
+  <app-pool [code]="code"></app-pool>
+</mat-dialog-content>

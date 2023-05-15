@@ -1,0 +1,19 @@
+<mat-form-field class="file-form-field" appearance="outline">
+  <input matInput [placeholder]="placeholder" [value]="value" [disabled]="disabled" [matTooltip]="value" readonly>
+  <input type="file" [attr.accept]="accept" (change)="onChange()" hidden #fileInput>
+  <div fxLayout="row" matSuffix>
+    <button mat-icon-button  *ngIf="value" (click)="clear()" matTooltip="წაშლა" [disabled]="disabled">
+      <mat-icon>clear</mat-icon>
+    </button>
+<!--    <button mat-button color="primary" matTooltip="ფაილის ჩამოტვირთვა"  (click)="downloadFile()" *ngIf="value">
+      <mat-icon aria-label="ფაილის ჩამოტვირთვა">cloud_download</mat-icon>
+    </button>-->
+
+    <button mat-button [color]="iconColor"  matTooltip="ფაილის არჩევა" (click)="fileInput.click()" [disabled]="disabled">
+      <mat-icon aria-label="ფაილის არჩევა">{{ icon }}</mat-icon>
+    </button>
+    <button mat-button [color]="iconColor"  matTooltip="სურათის გადაღება" (click)="takePicture()" *ngIf="!value">
+      <mat-icon>photo_camera</mat-icon>
+    </button>
+  </div>
+</mat-form-field>

@@ -1,0 +1,10 @@
+mat-sidenav-container {
+  height: calc(100% - 64px);
+  mat-list-item{
+    cursor: pointer;
+  }
+}
+.activeRoute{
+  background-color: #2196f329;
+
+}

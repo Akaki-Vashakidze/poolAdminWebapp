@@ -1,0 +1,72 @@
+<div fxLayout="column">
+  <div fxFlex>
+    <h4>ჯგუფები</h4>
+  </div>
+  <div *ngIf="editable" style="background: white;height: 64px;">
+    <div fxLayoutAlign="row" style="margin-top: 10px;">
+      <mat-form-field>
+        <mat-label>ახალი ჯგუფი</mat-label>
+        <input matInput #itemValue>
+      </mat-form-field>
+      <button mat-button (click)="saveNode(null, itemValue.value, itemValue)">დამატება</button>
+    </div>
+  </div>
+  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" *ngIf="data.length">
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+      <button mat-icon-button disabled></button>
+      <div *ngIf="selectable; else isSelectable">
+        <mat-checkbox class="checklist-leaf-node"
+                      *ngIf="selectable"
+                      [checked]="checklistSelection.isSelected(node)"
+                      (change)="changeLeafNode(node)">{{node.item}}
+        </mat-checkbox>
+      </div>
+      <ng-template #isSelectable>
+        {{node.item}}
+      </ng-template>
+      <button mat-icon-button class="action-button" (click)="addNewItem(node)" *ngIf="editable">
+        <mat-icon>add</mat-icon>
+      </button>
+      <button mat-icon-button class="action-button" (click)="delete(node)"  *ngIf="editable">
+        <mat-icon [color]="'warn'">delete</mat-icon>
+      </button>
+    </mat-tree-node>
+
+    <mat-tree-node *matTreeNodeDef="let node; when: hasNoContent" matTreeNodePadding>
+      <button mat-icon-button disabled></button>
+      <mat-form-field>
+        <mat-label>ახალი ჯგუფი</mat-label>
+        <input matInput #itemValue>
+      </mat-form-field>
+      <button mat-button (click)="saveNode(node, itemValue.value)">დამატება</button>
+    </mat-tree-node>
+
+    <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+      <button mat-icon-button matTreeNodeToggle
+              [attr.aria-label]="'toggle ' + node.filename">
+        <mat-icon class="mat-icon-rtl-mirror">
+          {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+        </mat-icon>
+      </button>
+
+      <div *ngIf="selectable; else isSelectable">
+        <mat-checkbox
+          [checked]="descendantsAllSelected(node)"
+          [indeterminate]="descendantsPartiallySelected(node)"
+          (change)="todoItemSelectionToggle(node)">{{node.item}}
+        </mat-checkbox>
+      </div>
+      <ng-template #isSelectable>
+        {{node.item}}
+      </ng-template>
+
+      <button mat-icon-button class="action-button" (click)="addNewItem(node)" *ngIf="editable">
+        <mat-icon>add</mat-icon>
+      </button>
+      <button mat-icon-button class="action-button" (click)="delete(node)"  *ngIf="editable">
+        <mat-icon [color]="'warn'">delete</mat-icon>
+      </button>
+    </mat-tree-node>
+  </mat-tree>
+
+</div>

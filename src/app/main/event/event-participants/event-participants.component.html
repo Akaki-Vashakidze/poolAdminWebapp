@@ -1,0 +1,38 @@
+<mat-dialog-content>
+  <div fxLayout="column">
+    <mat-expansion-panel *ngFor="let participant of event.participants" (opened)="panelOpened(participant)">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{participant.name}}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{participant.timestamp | date}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <mat-nav-list *ngIf="isAdmin; else enroll">
+        <mat-list-item *ngFor="let user of participant
+        .users">
+          <a matLine>{{ user.profile.firstName + ' ' + user.profile.lastName }} ({{user.profile.pid}}) &nbsp; &nbsp;
+            {{getStatus(user.pool)}} &nbsp; &nbsp; {{user.pool.active?'აქტიური':'არააქტიური'}}</a>
+          <button mat-icon-button>
+            <mat-icon>info</mat-icon>
+          </button>
+        </mat-list-item>
+      </mat-nav-list>
+      <ng-template #enroll>
+        <div fxLayout="row">
+          <div>სულ:</div>
+          <div>&nbsp;{{participant.users?participant.users.length:0}} მომხმარებელი</div>
+          <div fxFlex></div>
+          <button mat-raised-button [color]="'primary'" (click)="enrollToGroup(participant)"
+                  [disabled]="sessionData.pool.active">
+            ჩაწერა
+          </button>
+        </div>
+
+      </ng-template>
+    </mat-expansion-panel>
+
+  </div>
+</mat-dialog-content>

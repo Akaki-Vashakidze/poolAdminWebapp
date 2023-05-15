@@ -1,0 +1,26 @@
+<div fxLayout="column"  fxLayoutAlign="center center" style="height: 90vh;">
+  <div fxLayout="row" >
+    <div fxFlex></div>
+    <form [formGroup]="loginForm" (ngSubmit)="login()" autocomplete="off" novalidate>
+      <mat-card >
+        <mat-card-header>
+          <mat-card-title>ავტორიზაცია</mat-card-title>
+        </mat-card-header>
+        <mat-card-content fxLayout="column">
+          <mat-form-field fxFlex>
+            <input matInput formControlName="userName" placeholder="მომხმარებლის სახელი" required>
+          </mat-form-field>
+
+          <mat-form-field fxFlex>
+            <input type="password" matInput formControlName="password" placeholder="პაროლი" required>
+          </mat-form-field>
+        </mat-card-content>
+        <mat-card-actions>
+          <button type="submit" [disabled]="!loginForm.valid" mat-button>შესვლა</button>
+          <button  routerLink="/auth/register" mat-button>რეგისტრაცია</button>
+        </mat-card-actions>
+      </mat-card>
+    </form>
+    <div fxFlex></div>
+  </div>
+</div>

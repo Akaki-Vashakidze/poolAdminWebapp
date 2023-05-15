@@ -1,0 +1,173 @@
+<mat-dialog-content>
+  <div fxLayout="row">
+    <div fxFlex></div>
+    <div>
+      <button mat-icon-button (click)="closeDialog(false)">
+        <mat-icon>
+          close
+        </mat-icon>
+      </button>
+    </div>
+  </div>
+  <mat-horizontal-stepper linear #stepper> <!--linear-->
+    <mat-step [stepControl]="form.get('base')" [editable]="isEditable">
+      <form [formGroup]="form.get('base')">
+        <ng-template matStepLabel>ინფორმაცია</ng-template>
+
+        <div fxLayout="column">
+          <div fxLayout="row">
+            <div fxFlex>
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>სახელი</mat-label>
+                <input matInput placeholder="სახელი" formControlName="name" required>
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row">
+            <div fxFlex>
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>დაწყების თარიღი</mat-label>
+                <input matInput [matDatepicker]="startDate" placeholder="დაწყების თარიღი" formControlName="startDate"
+                       #startDateInput>
+                <mat-datepicker #startDate></mat-datepicker>
+                <div matSuffix fxLayout="row">
+                  <mat-datepicker-toggle [for]="startDate"></mat-datepicker-toggle>
+                  <button mat-button *ngIf="startDateInput.value" mat-icon-button aria-label="გასუფთავება"
+                          (click)="form.get('base').get('startDate').reset()">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+
+              </mat-form-field>
+            </div>
+            <div fxFlex>
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>დასრულების თარიღი</mat-label>
+                <input matInput [matDatepicker]="endDate" placeholder="დასრულების თარიღი" formControlName="endDate"
+                       #endDateInput>
+                <mat-datepicker #endDate></mat-datepicker>
+                <div matSuffix fxLayout="row">
+                  <mat-datepicker-toggle [for]="endDate"></mat-datepicker-toggle>
+                  <button mat-button *ngIf="endDateInput.value" mat-icon-button aria-label="გასუფთავება"
+                          (click)="form.get('base').get('endDate').reset()">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+
+              </mat-form-field>
+            </div>
+            <div fxLayout="row">
+              <div fxFlex>
+                <app-file fxFlex
+                          [value]="form.get('base').get('coverName').value"
+                          [icon]="'image'"
+                          [disabled]="file.cover.disabled"
+                          [accept]="file.cover.accept"
+                          [placeholder]="'ქოვერი'"
+                          (fileChange)="fileChange($event,'cover')"
+                ></app-file>
+              </div>
+            </div>
+          </div>
+
+          <div fxLayout="row">
+            <div fxFlex>
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>დამატებითი ინფორმაცია</mat-label>
+                <input matInput placeholder="დამატებითი ინფორმაცია" formControlName="description" required>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div>
+          <button mat-button (click)="saveInfo(stepper)" [disabled]="form.invalid">შემდეგ</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="form.get('races')" [editable]="isEditable">
+
+      <ng-template matStepLabel>გაცურვები</ng-template>
+      <button mat-icon-button mat-raised-button color="primary" (click)="addItem({})">
+        <mat-icon>add</mat-icon>
+      </button>
+      <form [formGroup]="form.get('races')">
+        <div *ngFor="let item of form.get('races')['controls']; let i = index;" class="eventRace">
+          <div [formGroup]="item" fxLayout="row">
+            <div fxFlex>
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>title</mat-label>
+                <mat-select formControlName="title" fxFlex>
+                  <mat-option *ngFor="let st of styles" [value]="st">{{st}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex>
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>დისტანცია</mat-label>
+                <mat-select formControlName="distance" fxFlex>
+                  <mat-option *ngFor="let opt of distances" [value]="opt">{{opt}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex>
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>სქესი</mat-label>
+                <mat-select formControlName="sex" fxFlex>
+                  <mat-option *ngFor="let opt of genders" [value]="opt">{{opt}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div style="padding: 20px;">
+              <mat-checkbox formControlName="isSelection">ფინალები</mat-checkbox>
+            </div>
+            <div style="padding: 12px;">
+              <button mat-raised-button mat-icon-button color="warn"
+                      (click)="showParticipantFor[i]=!showParticipantFor[i]">
+                <mat-icon>people</mat-icon>
+              </button>
+              <button mat-raised-button mat-icon-button color="warn" (click)="deleteItem(item,i)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div *ngIf="showParticipantFor[i]">
+            <mat-icon (click)="addParticipants(item, [{}])" color="primary" style="cursor: pointer;">add</mat-icon>
+            <form [formGroup]="item.get('participants')">
+              <div *ngFor="let prt of item.get('participants').controls; let i = index;">
+                <div [formGroup]="prt" class="participant">
+                  <mat-form-field fxFlex>
+                    <mat-label>სახელი, გვარი</mat-label>
+                    <input matInput placeholder="სახელი, გვარი" formControlName="fullName">
+                  </mat-form-field>
+                  <mat-form-field fxFlex>
+                    <mat-label>კლუბი</mat-label>
+                    <input matInput placeholder="კლუბი" formControlName="team">
+                  </mat-form-field>
+                  <div fxFlex>
+                    <mat-form-field >
+                      <mat-label>წუთი</mat-label>
+                      <input matInput type="number" min="0" placeholder="წუთი" formControlName="minutes">
+                    </mat-form-field>:
+                    <mat-form-field >
+                      <mat-label>წამი</mat-label>
+                      <input matInput type="number" min="0" placeholder="წამი" formControlName="seconds">
+                    </mat-form-field>:
+                    <mat-form-field >
+                      <mat-label>მილიწამი</mat-label>
+                      <input matInput type="number"  min="0" placeholder="მილიწამი" formControlName="milliseconds">
+                    </mat-form-field>
+                  </div>
+                  <mat-icon color="primary" style="cursor: pointer;" (click)="deleteParticipant(prt, item, i)">delete</mat-icon>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </form>
+      <div>
+        <button mat-button (click)="saveRaces()">შემდეგ</button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+
+</mat-dialog-content>

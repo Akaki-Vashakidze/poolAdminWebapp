@@ -1,0 +1,13 @@
+@font-face {
+  font-family: 'BPG DejaVu Sans';
+  src: url('BPGDejaVuSans.woff2') format('woff2'), url('BPGDejaVuSans.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'BPG DejaVu Sans Caps Web';
+  src: url('BPGDejaVuSansCapsWeb.woff2') format('woff2'), url('BPGDejaVuSansCapsWeb.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}

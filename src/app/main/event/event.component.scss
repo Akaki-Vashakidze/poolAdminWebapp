@@ -1,0 +1,23 @@
+.body {
+
+  .header {
+    width: 100%;
+    button{
+      span{
+        color: rgb(33, 150, 243);
+      }
+    }
+  }
+  .example-card {
+    max-width: 400px;
+  }
+
+  .example-header-image {
+    background-size: cover;
+  }
+
+  mat-card {
+    margin: 20px 0px 0px 20px;
+  }
+
+}

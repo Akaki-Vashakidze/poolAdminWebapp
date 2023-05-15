@@ -1,0 +1,58 @@
+<div fxLayout="column">
+  <div fxLayout="row">
+    <div>
+      <h4>პაკეტები</h4>
+    </div>
+    <div fxLayout="column" fxLayoutAlign="center">
+      <button mat-icon-button (click)="toggleAddForm()">
+        <mat-icon [color]="'primary'" matTooltip="პაკეტის დამატება">add</mat-icon>
+      </button>
+    </div>
+
+  </div>
+  <div *ngIf="showForm">
+    <form [formGroup]="addForm" (submit)="savePackage()"
+          autocomplete="off">
+
+      <div fxLayout="column">
+        <div fxLayout="row"  fxLayoutAlign="space-between">
+          <mat-form-field fxFlex="48" appearance="outline">
+            <mat-label>სახელი</mat-label>
+            <input matInput formControlName="name">
+            <!--<span matSuffix>#</span>-->
+          </mat-form-field>
+
+          <mat-form-field fxFlex="48" appearance="outline">
+            <mat-label>ხანგრძლივობა</mat-label>
+            <input matInput formControlName="duration">
+          </mat-form-field>
+        </div>
+        <div fxLayout="row"  fxLayoutAlign="space-between">
+          <mat-form-field fxFlex="48" appearance="outline">
+            <mat-label>ვიზიტების რაოდენობა (თვეში)</mat-label>
+            <input matInput formControlName="visitAmount">
+          </mat-form-field>
+
+          <mat-form-field fxFlex="48" appearance="outline">
+            <mat-label>ფასი</mat-label>
+            <input matInput type="number" formControlName="price">
+            <span matSuffix style="font-size: 22px;">₾</span>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <button mat-button type="submit" *ngIf="!addForm.get('_id').value" [disabled]="addForm.invalid" [color]="'primary'">დამატება</button>
+      <button mat-button type="submit" *ngIf="addForm.get('_id').value" [disabled]="addForm.invalid" [color]="'primary'">შენახვა</button>
+    </form>
+  </div>
+  <div>
+    <app-table
+      [data]="tableData"
+      [columns]="columns"
+      [selectable]="false"
+      [sortable]="false"
+      [paging]="paging"
+      [actions]="actions"
+      (pageChange)="pageChange($event)"></app-table>
+  </div>
+</div>

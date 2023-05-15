@@ -1,0 +1,22 @@
+mat-dialog-content{
+  min-width: 600px;
+  form{
+    margin-top: 10px;
+    mat-form-field{
+      margin-left:2px;
+      margin-right:2px;
+    }
+  }
+}
+input[type=number]{
+  width: 50px;
+}
+.participant{
+  mat-form-field{
+    width: 50px;
+  }
+}
+.eventRace{
+  border: 1px solid lightgray;
+  padding: 24px;
+}

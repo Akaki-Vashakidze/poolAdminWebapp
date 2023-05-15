@@ -1,0 +1,137 @@
+<mat-accordion multi>
+  <mat-expansion-panel expanded>
+    <mat-expansion-panel-header>
+      <mat-panel-title>ძებნა</mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <form [formGroup]="searchForm" fxLayout="column" autocomplete="off">
+      <div [formGroup]="searchForm.get('profile')" fxLayout="row" fxLayoutAlign="space-between">
+        <mat-form-field fxFlex="32" appearance="outline">
+          <mat-label>სახელი</mat-label>
+          <input matInput formControlName="firstName">
+          <!--<span matSuffix>#</span>-->
+        </mat-form-field>
+
+        <mat-form-field fxFlex="32" appearance="outline">
+          <mat-label>გვარი</mat-label>
+          <input matInput formControlName="lastName">
+        </mat-form-field>
+
+
+        <mat-form-field fxFlex="32" appearance="outline">
+          <mat-label>დაბადების თარიღი</mat-label>
+          <input matInput [matDatepicker]="birthDate" formControlName="birthDate" #birthDateInput>
+          <mat-datepicker #birthDate></mat-datepicker>
+          <div fxLayout="row" matSuffix>
+            <mat-datepicker-toggle matSuffix [for]="birthDate"></mat-datepicker-toggle>
+            <button mat-button *ngIf="birthDateInput.value" mat-icon-button aria-label="გასუფთავება"
+              (click)="resetField('profile.birthDate',$event)">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </mat-form-field>
+
+      </div>
+      <div [formGroup]="searchForm.get('pool')" *ngIf="searchForm.get('pool') && searchForm.get('pool').value"
+        fxLayout="row wrap" fxLayoutAlign="space-between">
+        <mat-form-field appearance="outline" fxFlex="32">
+          <mat-label>პაკეტი</mat-label>
+          <mat-select formControlName="package" fxFlex>
+            <mat-option *ngFor="let opt of packages.data" [value]="opt._id">{{opt.name}}- თვეში
+              {{opt.visitAmount}} ვიზიტი ({{opt.duration}} )
+            </mat-option>
+          </mat-select>
+          <button matSuffix mat-icon-button color="warn" *ngIf="searchForm.get('pool').get('package').value"
+            (click)="resetField('pool.package',$event)">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="32">
+          <mat-label>მწვრთნელი</mat-label>
+          <mat-select formControlName="coach" (selectionChange)="getGroupsByCoach()" fxFlex>
+            <mat-option *ngFor="let opt of coaches.data" [value]="opt._id">{{opt.profile.firstName +' '+
+              opt.profile.lastName}}
+            </mat-option>
+          </mat-select>
+          <button matSuffix mat-icon-button color="warn" *ngIf="searchForm.get('pool').get('coach').value"
+            (click)="resetField('pool.coach',$event);getCoaches();">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="32">
+          <mat-label>ჯგუფი</mat-label>
+          <mat-select formControlName="group" fxFlex>
+            <mat-option *ngFor="let opt of groups.data" [value]="opt._id">{{opt.name}}
+            </mat-option>
+          </mat-select>
+          <button matSuffix mat-icon-button color="warn" *ngIf="searchForm.get('pool').get('group').value"
+            (click)="resetField('pool.group',$event)">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="32">
+          <mat-label>თარიღიდან</mat-label>
+          <input matInput [matDatepicker]="startDate" formControlName="startDate" #startDateInput>
+          <mat-datepicker #startDate></mat-datepicker>
+          <div fxLayout="row" matSuffix>
+            <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+            <button mat-button *ngIf="startDateInput.value" mat-icon-button aria-label="გასუფთავება"
+              (click)="searchForm.get('pool').get('startDate').reset()">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="32">
+          <mat-label>თარიღამდე</mat-label>
+          <input matInput [matDatepicker]="endDate" formControlName="endDate" #endDateInput>
+          <mat-datepicker #endDate></mat-datepicker>
+          <div fxLayout="row" matSuffix>
+            <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+            <button mat-button *ngIf="endDateInput.value" mat-icon-button aria-label="გასუფთავება"
+              (click)="searchForm.get('pool').get('endDate').reset()">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="32">
+          <mat-label>ბარათის სტატუსი</mat-label>
+          <mat-select formControlName="active" fxFlex>
+            <mat-option *ngFor="let opt of poolCardStatuses.data" [value]="opt.value">{{opt.name}}
+            </mat-option>
+          </mat-select>
+          <button matSuffix mat-icon-button color="warn"
+            *ngIf="searchForm.get('pool').get('active').value || searchForm.get('pool').get('active').value === false"
+            (click)="resetField('pool.active',$event)">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+
+    </form>
+
+    <mat-action-row>
+      <button mat-button color="primary" (click)="search()">
+        <mat-icon aria-label="ძებნა">search</mat-icon>
+        <span>ძებნა</span>
+      </button>
+      <button mat-button color="warn" (click)="resetSearchForm()">
+        <mat-icon aria-label="გასუფთავება">clear</mat-icon>
+        <span>გასუფთავება</span>
+      </button>
+    </mat-action-row>
+  </mat-expansion-panel>
+
+</mat-accordion>
+<mat-toolbar>
+  <mat-toolbar-row>
+    <span>მომხმარებლები</span>
+    <div>
+      <button mat-icon-button (click)="openWizardDialog(null, false)">
+        <mat-icon [color]="'primary'">add</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
+<app-table [data]="tableData" [columns]="columns" [selectable]="false" [sortable]="true" [paging]="paging"
+  [pageSizeOptions]="pageSizeOptions" [actions]="actions" (checkChange)="onCheck($event)"
+  (pageChange)="pageChange($event)" (sortChange)="sortChange($event)"></app-table>

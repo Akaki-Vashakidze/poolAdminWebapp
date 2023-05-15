@@ -1,0 +1,41 @@
+<mat-dialog-content>
+  <div fxLayout="row">
+    <div fxFlex></div>
+    <h4>
+      ბარათების გატარება (ვადა: {{userForm.get('endDate').value | date}})
+    </h4>
+    <div fxFlex></div>
+  </div>
+  <div fxLayout="column">
+    <div fxLayout="row" fxLayoutAlign="center">
+      <form [formGroup]="poolForm" fxLayout="column" fxLayoutAlign="space-between center" autocomplete="off">
+        <mat-form-field appearance="outline">
+          <mat-label>მომხმარებლის კოდი</mat-label>
+          <input  matInput formControlName="code">
+        </mat-form-field>
+      </form>
+    </div>
+    <div fxLayout="column">
+      <div fxLayout="row" fxLayoutAlign="center" *ngIf="userForm.get('_id').value">
+        <form [formGroup]="userForm" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-between center" autocomplete="off">
+
+          <mat-form-field   appearance="outline">
+            <mat-label>სახელი, გვარი</mat-label>
+            <input  matInput formControlName="fullName" readonly>
+          </mat-form-field>
+          <mat-form-field   appearance="outline">
+            <mat-label>დაბადების თარიღი</mat-label>
+            <input  matInput formControlName="birthDate" readonly>
+          </mat-form-field>
+          <mat-form-field   appearance="outline">
+            <mat-label>ვიზიტები</mat-label>
+            <input  matInput formControlName="visited" readonly>
+          </mat-form-field>
+        </form>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="center">
+        <button mat-raised-button [color]="'primary'" [disabled]="visitAllReadyDone || userForm.invalid || userForm.get('visited').value >= maxVisit || !userForm.get('poolActive').value" (click)="letsGoSwimming()">გატარება</button>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>

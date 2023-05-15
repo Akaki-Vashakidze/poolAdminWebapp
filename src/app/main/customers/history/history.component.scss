@@ -1,0 +1,30 @@
+mat-dialog-content {
+  min-width: 930px;
+  // min-height: 930px;
+  font-family: "Dejavu sans", serif;
+  mat-card-content{
+    div{
+      line-height: 23px;
+    }
+    div:nth-child(1){
+      font-weight: bold;
+    }
+  }
+}
+
+.container {
+  //max-width: 500px;
+  max-height: 830px;
+}
+
+.arrow-divider {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  mat-icon {
+    font-size: 48px;
+  }
+}
+.currentCard{
+  background-color: #2196f3;
+  color: white;
+}

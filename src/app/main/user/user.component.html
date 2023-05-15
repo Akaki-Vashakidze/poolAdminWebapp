@@ -1,0 +1,26 @@
+<div style="height: 100vh;">
+  <mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <span>მართვის პანელი</span>
+      <div fxFlex></div>
+      <div *ngIf="isLoggedIn">
+        <button mat-button (click)="logout()">გამოსვლა</button>
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <mat-sidenav-container >
+    <mat-sidenav  mode="side" [opened]="opened">
+      <mat-list role="list">
+        <mat-list-item class="menu-item" role="listitem" *ngFor="let item of menu" [routerLink]="item.route" routerLinkActive="activeRoute">
+          <mat-icon mat-list-icon [ngStyle]="item.style">{{item.icon}}</mat-icon>
+          <span>{{item.name}}</span>
+        </mat-list-item>
+      </mat-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+</div>

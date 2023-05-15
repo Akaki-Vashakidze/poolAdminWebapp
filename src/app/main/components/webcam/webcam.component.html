@@ -1,0 +1,33 @@
+<div style="text-align:center">
+  <div *ngIf="!webcamImage">
+    <webcam [height]="500" [width]="500" [trigger]="triggerObservable" (imageCapture)="handleImage($event)"
+            *ngIf="showWebcam"
+            [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable"
+            [videoOptions]="videoOptions"
+            (cameraSwitched)="cameraWasSwitched($event)"
+            (initError)="handleInitError($event)"
+    ></webcam>
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <button mat-raised-button [color]="'primary'" class="actionBtn" (click)="triggerSnapshot();">გადაღება</button>
+      <button mat-raised-button [color]="'warn'" class="actionBtn" (click)="toggleWebcam();">გაუქმება</button>
+    </div>
+  </div>
+</div>
+
+<div class="snapshot" *ngIf="webcamImage">
+  <h2>გადაღებულია</h2>
+  <img [src]="webcamImage.imageAsDataUrl"/>
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <button mat-raised-button [color]="'accent'" class="actionBtn" (click)="webcamImage = null;">ახალი სურათი</button>
+    <button mat-raised-button [color]="'primary'" class="actionBtn" (click)="savePicture()"
+            *ngIf="webcamImage.imageAsDataUrl">შენახვა
+    </button>
+    <button mat-raised-button [color]="'warn'" class="actionBtn" (click)="toggleWebcam();">გაუქმება</button>
+  </div>
+</div>
+<!--
+<h4 *ngIf="errors.length > 0">Messages:</h4>
+<ul *ngFor="let error of errors">
+  <li>{{error | json}}</li>
+</ul>-->
+

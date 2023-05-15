@@ -1,0 +1,148 @@
+<mat-dialog-content>
+  <div fxLayout="row">
+    <div fxFlex></div>
+    <div>
+      <button mat-icon-button (click)="closeDialog(false)">
+        <mat-icon>
+          close
+        </mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <mat-horizontal-stepper linear #stepper> <!--linear-->
+    <mat-step [stepControl]="form.get('profile')" [editable]="isEditable">
+      <form [formGroup]="form.get('profile')">
+        <ng-template matStepLabel>პირადი ინფორმაცია</ng-template>
+
+        <div fxLayout="column">
+          <div fxLayout="row">
+            <div fxFlex>
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>სახელი</mat-label>
+                <input matInput placeholder="სახელი" formControlName="firstName" required>
+              </mat-form-field>
+            </div>
+            <div fxFlex>
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>გვარი</mat-label>
+                <input matInput placeholder="გვარი" formControlName="lastName" required>
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row">
+            <div fxFlex>
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>დაბადების თარიღი</mat-label>
+                <input matInput [matDatepicker]="birthDate" placeholder="დაბადების თარიღი" formControlName="birthDate"
+                       #birthDateInput>
+                <mat-datepicker #birthDate></mat-datepicker>
+                <div matSuffix fxLayout="row">
+                  <mat-datepicker-toggle [for]="birthDate"></mat-datepicker-toggle>
+                  <button mat-button *ngIf="birthDateInput.value" mat-icon-button aria-label="გასუფთავება"
+                          (click)="form.get('profile').get('birthDate').reset()">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+
+              </mat-form-field>
+            </div>
+            <div fxFlex>
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>პირადი ნომერი</mat-label>
+                <input type="number" matInput placeholder="პირადი ნომერი" formControlName="pid" required>
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row">
+            <div fxFlex>
+              <app-file fxFlex
+                [value]="form.get('profile').get('coverName').value"
+                        [icon]="'image'"
+                        [disabled]="file.cover.disabled"
+                [accept]="file.cover.accept"
+                [placeholder]="'ქოვერი'"
+                (fileChange)="fileChange($event,'cover')"
+              ></app-file>
+            </div>
+            <div fxFlex>
+              <app-file fxFlex
+                        [value]="form.get('profile').get('avatarName').value"
+                        [icon]="'image'"
+                        [disabled]="file.avatar.disabled"
+                        [accept]="file.avatar.accept"
+                        [placeholder]="'ავატარი'"
+                        (fileChange)="fileChange($event,'avatar')"
+              ></app-file>
+            </div>
+          </div>
+          <div fxLayout="row">
+            <div fxFlex>
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>დამატებითი ინფორმაცია</mat-label>
+                <input matInput placeholder="დამატებითი ინფორმაცია" formControlName="description" required>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div>
+          <button mat-button matStepperNext [disabled]="form.get('profile').invalid">შემდეგ</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="form.get('contact')" [editable]="isEditable">
+      <form [formGroup]="form.get('contact')">
+        <ng-template matStepLabel>მისამართი, საკონტაქტო</ng-template>
+        <div fxLayout="column">
+          <div fxLayout="row">
+            <div fxFlex>
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>მობილური</mat-label>
+                <input type="number" matInput placeholder="მობილური" formControlName="mobile" required>
+              </mat-form-field>
+            </div>
+            <div fxFlex>
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>ტელეფონი</mat-label>
+                <input matInput placeholder="ტელეფონი" formControlName="phone" required>
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxLayout="row">
+            <div fxFlex>
+              <mat-form-field appearance="outline" fxFlex>
+                <mat-label>მისამართი</mat-label>
+                <input matInput placeholder="მისამართი" formControlName="address" required>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div>
+          <button mat-button matStepperPrevious>უკან</button>
+          <button mat-button matStepperNext [disabled]="form.get('contact').invalid">შემდეგ</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="form.get('pool')" [editable]="isEditable">
+      <form [formGroup]="form.get('pool')">
+        <ng-template matStepLabel>ჯგუფები</ng-template>
+        <div fxLayout="column">
+          <div fxLayout="row">
+            <div  fxLayout="column" fxFlex>
+              <div>
+                <h4>აირჩიეთ ჯგუფები</h4>
+              </div>
+              <app-tree *ngIf="groups.data.length"  [data]="groups.data" [selectable]="true" (action)="treeAction($event)" [selected]="groups.selectedGroups"></app-tree>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 25px">
+          <button mat-button matStepperPrevious>უკან</button>
+          <button mat-button (click)="saveInfo()" [disabled]="this.form.invalid">შენახვა</button>
+        </div>
+      </form>
+    </mat-step>
+  </mat-horizontal-stepper>
+
+
+</mat-dialog-content>

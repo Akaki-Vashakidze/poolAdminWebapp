@@ -1,0 +1,34 @@
+<div *ngIf="user">
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div fxLayout="column" class="profile-container">
+      <div class="header" fxLayout="column">
+        <div class="cover-img" [ngStyle]="{backgroundImage:'url(uploads/'+user.profile.coverId+')', backgroundColor:'black'}"></div>
+        <div class="nav-panel" fxLayout="row">
+          <div fxLayout="column" class="profile-img-parent" >
+            <img class="profile-img" [src]="'uploads/'+user.profile.avatarId" [alt]="user.profile.avatarName">
+          </div>
+          <div fxLayout="column" class="nav-block" fxFlex>
+            <div class="title" fxLayout="column">
+              <div fxFlex></div>
+              <span class="user-name">{{user.profile.firstName + " " + user.profile.lastName}}</span>
+              <!--<span style="height:50px;"></span>-->
+            </div>
+            <div >
+              <mat-tab-group mat-stretch-tabs (selectedTabChange)="tabChange($event)">
+                <mat-tab label="{{item.label}}" *ngFor="let item of tabs.list"></mat-tab>
+              </mat-tab-group>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="content">
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>

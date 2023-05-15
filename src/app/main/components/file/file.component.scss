@@ -1,0 +1,11 @@
+.file-form-field {
+  width: 100%;
+  button[mat-button] {
+    min-width: 0; // 44px
+    line-height: 28px;
+    padding-left: 2px; // 8px
+    padding-right: 2px; // 8px
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}

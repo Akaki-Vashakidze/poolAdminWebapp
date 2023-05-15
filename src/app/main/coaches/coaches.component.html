@@ -1,0 +1,47 @@
+<div class="body">
+  <div class="header" *ngIf="isAdmin">
+    <div>
+      <button mat-button (click)="openCoachDialog()">
+        <mat-icon [color]="'primary'">add</mat-icon>
+        <span>დამატება</span>
+      </button>
+    </div>
+  </div>
+  <div fxLayout="row wrap" fxLayoutAlign="space-between center"  >
+    <div *ngFor="let coach of coaches" fxFlex="33">
+      <mat-card class="example-card">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image" [ngStyle]="{backgroundImage: 'url('+'uploads/'+coach.avatar+')'}"></div>
+          <mat-card-title>{{coach.firstName}}</mat-card-title>
+          <mat-card-subtitle>{{coach.lastName}}</mat-card-subtitle>
+          <div fxFlex></div>
+          <button mat-icon-button (click)="openCoachDialog(coach)" *ngIf="isAdmin">
+            <mat-icon [color]="'primary'">edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="deleteCoach(coach)" *ngIf="isAdmin">
+            <mat-icon [color]="'warn'">delete</mat-icon>
+          </button>
+        </mat-card-header>
+        <img mat-card-image [src]="'uploads/'+coach.cover" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <p>
+            {{coach.description}}
+          </p>
+        </mat-card-content>
+        <mat-card-actions fxLayoutAlign="space-between">
+          <button mat-button>LIKE</button>
+          <button mat-button (click)="openGroupsDialog(coach)">
+            <div fxLayout="row" fxLayoutAlign="space-between">
+              <div fxLayout="column" fxLayoutAlign="center">
+                <mat-icon [color]="'primary'">groups</mat-icon>
+              </div>
+              &nbsp;
+              <span>ჯგუფები</span>
+            </div>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+
+</div>

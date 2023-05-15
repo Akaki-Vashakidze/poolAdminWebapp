@@ -1,0 +1,59 @@
+<h1>{{event.name}}</h1>
+<h3>{{event.description}}</h3>
+
+<div>
+  <span>
+    <mat-form-field appearance="outline">
+      <mat-label>ბილიკის რაოდენობა</mat-label>
+      <mat-select [placeholder]="'ბილიკის რაოდენობა'" [(ngModel)]="laneCount" (valueChange)="findRaces()">
+        <mat-option *ngFor="let lane of lanes" [value]="lane">{{lane}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </span>
+  <div class="download-buttons">
+    <button mat-raised-button color="primary" (click)="download(true)"> <mat-icon>save_alt</mat-icon>გადმოწერა შედეგებით</button>
+    &nbsp;&nbsp;
+    <button mat-raised-button color="primary" (click)="download(false)"><mat-icon>save_alt</mat-icon>გადმოწერა შედეგების გარეშე</button>
+  </div>
+</div>
+<!--<button mat-icon-button color="warn" [disabled]="!laneCount || !selectedRace" (click)="generate()"><mat-icon>slow_motion_video</mat-icon></button>-->
+<div id="races">
+  <div cdkDropListGroup *ngFor="let race of races; let j = index;" style="margin-bottom: 10px;">
+    <div [ngStyle]="{display:isDownloading?'none':'block'}">
+      <h1 style="font-size: 20px;padding: 0;margin: 0;"> {{race.distance + ' მ ' + race.title+ ' ' + race.sex + ' '}}
+        {{race.isSelection?'( ფინალები )':null}}</h1>
+    </div>
+    <!--<div>-->
+    <!--<button mat-icon-button color="primary" (click)="addNewSwim(race)"><mat-icon>add</mat-icon></button>-->
+    <!--</div>-->
+    <div class="example-container" *ngFor="let sw of swims[race._id]; let i = index;">
+
+      <h4 style="margin-top: 5px;margin-bottom: 5px;">{{ getPrevLength(race,j) + (i+1)}} გაცურვა {{race.distance + ' მ '
+        + race.title+ ' ' + race.sex + ' '}}</h4>
+
+      <div
+        cdkDropList
+        [cdkDropListData]="sw.participants"
+        class="example-list"
+        (cdkDropListDropped)="drop($event,sw)">
+        <div class="race-participants" *ngFor="let item of sw.participants;let i =index;" cdkDrag>
+          <div fxFlex>
+            <div fxFlex>{{i+1 +' ბილიკი &nbsp;&nbsp;'}}{{item.fullName!='--'?item.fullName + ' ':""}}{{item.team?"(" +
+              item.team + ")":""}}
+            </div>
+            <div *ngIf="item.minutes!=null && item.minutes!='--' && !isDownloading">
+              {{'' + item.minutes + ':' +item.seconds + '.' + item.milliseconds + ''}}
+            </div>
+            <div class="result" *ngIf="item.result && withResults">
+              {{'' + item.result.minutes + ':' +item.result.seconds + '.' + item.result.milliseconds + ''}}
+            </div>
+            <div class="actions">
+              <mat-icon (click)="setResult(race, sw, item)">timer</mat-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
